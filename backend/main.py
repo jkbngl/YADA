@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
+from pytube import YouTube
+import os
 
 some_file_path = "Tesla reversing sound.mp4"
 app = FastAPI()
@@ -20,10 +22,19 @@ def read_root():
     return {"Hello": "World"}
 
 @app.get("/download/")
-def main():
+def main(url: str, format: str):
 
-    print("test")
+    print(f"DOWNLOADING {url} in format {format}")
 
-    file_like = open(some_file_path, mode="rb")
+    YouTube(url).streams.get_highest_resolution().download()
+
+    yt = YouTube(url)
+    yt.streams.first().download()
+
+    download_path = yt.streams.first().default_filename
+    print(download_path)
+
+
+    file_like = open(download_path, mode="rb")
     return StreamingResponse(file_like, media_type="video/mp4")
 

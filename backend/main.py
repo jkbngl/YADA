@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 from pytube import YouTube
 import os
+import logging
 
 some_file_path = "Tesla reversing sound.mp4"
 app = FastAPI()
